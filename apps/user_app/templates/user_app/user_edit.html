@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8' />
+    <title>Index</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous'>
+    {% load static %}
+    <link rel='stylesheet' type='text/css' media='screen' href='{% static "user_app/style.css" %}' />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Test App</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-itm">
+                    <a class="nav-link" href="/user/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-itm">
+                    <a class="nav-link" href="/user/{{ user.id }}/show">Profile</a>
+                </li>
+            </ul>
+        </div>
+        <a href="/login">Sign Out</a>
+    </nav>
+    <div class="container">
+        <h2>Edit Profile</h2>
+        <div class="row">
+            <div class="col">
+                <h4>Edit Information</h4>
+                <form action="/process_edit" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="changed" value="information">
+                    {% if errors.email %}
+                        <p>{{ errors.email }}</p>
+                    {% endif %}
+                    <div class="form-group">
+                        <label class="row">Email Address</label>
+                        <input class="row col-sm-6 form-control" type="text" name="email" value="{{ user.email }}">
+                    </div>
+                    {% if errors.first_name %}
+                        <p>{{ errors.first_name }}</p>
+                    {% endif %}
+                    <div class="form-group">
+                        <label class="row">First Name</label>
+                        <input class="row col-sm-6 form-control" type="text" name="first_name" value="{{ user.first_name }}">
+                    </div>
+                    {% if errors.last_name %}
+                        <p>{{ errors.last_name }}</p>
+                    {% endif %}
+                    <div class="form-group">
+                        <label class="row">Last Name</label>
+                        <input class="row col-sm-6 form-control" type="text" name="last_name" value="{{ user.last_name }}">
+                    </div>
+                    <input class="btn btn-success" type="submit" value="Save">
+                </form>
+            </div>
+            <div class="col">
+                <h4>Change Password</h4>
+                <form action="/process_edit" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="changed" value="password">
+                    {% if errors.password %}
+                        <p>{{ errors.password }}</p>
+                    {% endif %}
+                    <div class="form-group">
+                        <label class="row">Password</label>
+                        <input class="row col-sm-6 form-control" type="password" name="password">
+                    </div>
+                    <div class="form-group">
+                        <label class="row">Password Confirmation</label>
+                        <input class="row col-sm-6 form-control" type="password" name="password_cf">
+                    </div>
+                    <input class="btn btn-success" type="submit" value="Update Password">
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h4>Edit Description</h4>
+                <form action="/process_edit" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="changed" value="description">
+                    <textarea class="form-control" name="description" rows="6">{{ user.description }}</textarea>
+                    <input type="submit" class="btn btn-success" value="Save">
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+</html>

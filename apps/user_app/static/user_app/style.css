@@ -1,0 +1,71 @@
+/* for all pages */
+.navbar {
+    border-bottom: 2px solid black;
+}
+
+/* for index.html */
+.jumbotron {
+    margin: 2%;
+}
+.flex-container {
+    margin: 2%;
+}
+.col.none {
+    border: none;
+}
+a.btn.none {
+    position: static;
+    float: none;
+}
+
+/* for login.html */
+.container {
+    margin: 2% auto;
+}
+.container form {
+    margin: 20px 0px;
+}
+.col-sm-6 {
+    margin-left: 4px;
+}
+
+label.row {
+    margin-left: 5px;
+}
+
+/* for error messages */
+.error {
+    color: red;
+}
+
+/* for edit pages */
+.col {
+    border: 1px solid black;
+    margin: 20px;
+    padding: 40px;
+    height: fit-content;
+}
+
+/* for admin dashboard */
+a.btn {
+    position: relative;
+    bottom: 40px;
+    float: right;
+}
+td a {
+    margin: 0px 10px;
+}
+
+/* for admin add user page */
+a.btn-primary {
+    position: relative;
+    bottom: 60px;
+    float: right;
+}
+
+/* for user edit page */
+textarea {
+    margin: 20px auto;
+}
+
+/* for show pages */

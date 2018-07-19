@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8' />
+    <title>Index</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous'>
+    {% load static %}
+    <link rel='stylesheet' type='text/css' media='screen' href='{% static "user_app/style.css" %}' />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Test App</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-itm">
+                    <a class="nav-link" href="/user/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-itm active">
+                    <a class="nav-link" href="/user/{{ user.id }}/show">Profile</a>
+                </li>
+            </ul>
+        </div>
+        <a href="/login">Sign Out</a>
+    </nav>
+    <div class="container">
+        <h2>{{ show_user.fullname }}</h2>
+        <div class="row">
+            <p class="col-sm-2">Registered at:</p>
+            <p class="col-sm-6">{{ show_user.created_at }}</p>
+        </div>
+        <div class="row">
+            <p class="col-sm-2">User ID:</p>
+            <p class="col-sm-6"># {{ show_user.id }}</p>
+        </div>
+        <div class="row">
+            <p class="col-sm-2">Email address:</p>
+            <p class="col-sm-6">{{ show_user.email }}</p>
+        </div>
+        <div class="row">
+            <p class="col-sm-2">Description:</p>
+            <p class="col-sm-6">{{ show_user.description }}</p>
+        </div>
+
+        <h3>Leave a message for {{ show_user.first_name }}:</h3>
+    </div>
+    <div class="container">
+            <form action="/user/{{ show_user.id }}/create_message" method="POST">
+                {% csrf_token %}
+                <h2>Post a message</h2>
+                <textarea name="content" class="form-control" rows="5"></textarea>
+                <input class="btn btn-primary" type="submit" value="Post Message">
+            </form>
+        </div>
+        {% for message in messages reversed %}
+        <div class="container">
+            <h3>{{ message.user_posted.fullname }} - {{message.created_at}}</h3>
+            <p>{{message.message}}</p>
+            {% if message.user_posted.id == request.session.current_user %}
+            <form action="/user/{{ show_user.id }}/{{ message.id }}/delete_message" method="POST">
+                {% csrf_token %}
+                <input type="submit" class="btn btn-danger" value="Delete Message">
+            </form>
+            {% endif %}
+            <div class="comments">
+                {% for comment in message.comments.all reversed %}
+                <div class="container">
+                    <h5>{{ comment.user.fullname }} - {{ comment.created_at }}</h3>
+                    <p>{{ comment.comment }}</p>
+                    {% if comment.user.id == request.session.current_user %}
+                    <form action="/user/{{ show_user.id }}/{{ comment.id }}/delete_comment" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" class="btn btn-danger" value="Delete Comment">
+                    </form>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            <form action="/user/{{ show_user.id }}/{{message.id}}/create_comment" method="POST">
+                {% csrf_token %}
+                <h4>Post a comment</h2>
+                <textarea name="content" class="form-control" rows="3"></textarea>
+                <input class="btn btn-success" type="submit" value="Post Comment">
+            </form>
+        </div>
+        {% endfor %}
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
